@@ -20,7 +20,7 @@ export class FilmsService {
 
     async addFilm(body: any) {
         try {
-            const film = new Film(undefined, body.title, body.category, body.global_description, new Date(body.released_date), body.duration, new Date(), new Date())
+            const film = new Film(undefined, body.title, body.category, body.global_description, new Date(body.released_date), undefined, body.available_country, true, body.duration, new Date(), new Date())
             return await this.dao.add(film)
         } catch (error) {
             throw error
@@ -49,7 +49,7 @@ export class FilmsService {
     async updateFilm(body: any, params: any) {
         try {
             const filmId: string = params.id
-            const film = new Film(undefined, body.title, body.category, body.global_description, new Date(body.released_date), body.duration, undefined, new Date())
+            const film = new Film(undefined, body.title, body.category, body.global_description, new Date(body.released_date), undefined, body.available_country, body.status, body.duration, undefined, new Date())
             return await this.dao.updateFilm(filmId, film)
         } catch (error) {
             throw error

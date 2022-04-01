@@ -5,6 +5,7 @@ import 'dotenv/config';
 import http from "http"
 
 import routes from './routes/routes.js';
+import { Utils } from './utils/utils.js';
 // import { initOpenApi, openApiInstance } from './openapi.js';
 
 const app: express.Application = express();
@@ -14,6 +15,22 @@ app.use(bodyParser.json());
 
 
 const port = process.env.PORT || 7070;
+
+app.use(async (req: express.Request | any, res: express.Response, next: express.NextFunction) => {
+    Utils.getInstance().getUser(req.headers.authorization)
+        .then((result) => {
+            if (result.status === "active"){
+                next()
+            } else if (result.status === "suspended"){
+                res.status(401).send("Your account is suspended")
+            } else {
+                throw "Inexistant user"
+            }
+        }).catch(() => {
+            res.status(401).send("Inexistant user")
+        })
+});
+
 routes(app)
 
 // initOpenApi(app, openApiInstance);

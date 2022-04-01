@@ -54,7 +54,7 @@ export class EpisodesDAO {
     async getEpisodeById(idSerie: string, episodeId: string) {
         let returnValue: Episode = null
         try {
-            const snapshot: DocumentSnapshot = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).get()
+            const snapshot: DocumentSnapshot = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).withConverter(Episode.episodeConverter).get()
             returnValue = snapshot.data() as Episode
             return returnValue
         } catch (error) {
@@ -64,7 +64,7 @@ export class EpisodesDAO {
 
     async updateEpisode(idSerie: string, episodeId: string, episode: Episode) {
         try {
-            const writeResult: WriteResult = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).set(episode, {merge: true})
+            const writeResult: WriteResult = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).withConverter(Episode.episodeConverter).set(episode, {merge: true})
             return "Episode updated successfully"
         } catch (error) {
             throw error
@@ -73,7 +73,7 @@ export class EpisodesDAO {
 
     async deleteEpisode(idSerie: string, episodeId: string) {
         try {
-            const writeResult: WriteResult = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).delete()
+            const writeResult: WriteResult = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).withConverter(Episode.episodeConverter).delete()
             return "Episode deleted successfully"
         } catch (error) {
             throw error

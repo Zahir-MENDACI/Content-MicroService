@@ -13,6 +13,7 @@ export class EpisodesController {
             const addEpisode = await episodesService.addEpisode(req.body, req.params)
             res.status(200).send(addEpisode);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -22,9 +23,10 @@ export class EpisodesController {
         const episodesService = EpisodesService.getInstance();
         try {
             const listActions = Utils.getInstance().listActions(req.query.sort as string, req.query.range as string, req.query.filter as string);
-            const episodes = await episodesService.getEpisodes(req.query, listActions)
+            const episodes = await episodesService.getEpisodes(req.params, listActions)
             res.status(200).send(episodes);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -35,6 +37,7 @@ export class EpisodesController {
             const episode = await episodesService.getEpisodeById(req.params)
             res.status(200).send(episode);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -45,6 +48,7 @@ export class EpisodesController {
             const episodeUpdated = await episodesService.updateEpisode(req.body, req.params)
             res.status(200).send(episodeUpdated);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -55,6 +59,7 @@ export class EpisodesController {
             const episodeDeleted = await episodesService.deleteEpisode(req.params)
             res.status(200).send(episodeDeleted);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }

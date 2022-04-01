@@ -4,31 +4,28 @@ import Episode from "./Episode";
 
 class Serie extends Content{
 
-  id: string;
-  title: string;
-  category: string;
-  global_description: string;
-  released_date: Date;
   nb_episodes: number;
-  createdAt: Date;
-  updatedAt: Date;
+  episodes: Episode[];
   
-    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, nb_episodes: number, createdAt: Date, updatedAt: Date) {
-      super(id, title, category, global_description, released_date, createdAt, updatedAt)
+    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, poster: string, available_country: string[], active: boolean, nb_episodes: number, createdAt: Date, updatedAt: Date) {
+      super(id, title, global_description, released_date, poster, createdAt, updatedAt, category, available_country, active)
       this.nb_episodes = nb_episodes
     }
 
     static serieConverter = {
-        toFirestore(film: Serie) {
+        toFirestore(serie: Serie) {
           const returnValue: any = {
-            id: film.id,
-            title: film.title,
-            category: film.category,
-            global_description: film.global_description,
-            released_date: film.released_date,
-            nb_episodes: film.nb_episodes,
-            createdAt: film.createdAt,
-            updatedAt: film.updatedAt
+            id: serie.id,
+            title: serie.title,
+            category: serie.category,
+            global_description: serie.global_description,
+            released_date: serie.released_date,
+            poster: serie.poster,
+            available_country: serie.available_country,
+            active: serie.active,
+            nb_episodes: serie.nb_episodes,
+            createdAt: serie.createdAt,
+            updatedAt: serie.updatedAt
           };
     
           Object.keys(returnValue).forEach((key) => {
@@ -58,6 +55,9 @@ class Serie extends Content{
             data.category,
             data.global_description,
             formatedDate,
+            data.poster,
+            data.available_country,
+            data.active,
             data.nb_episodes,
             data.createdAt,
             data.updatedAt

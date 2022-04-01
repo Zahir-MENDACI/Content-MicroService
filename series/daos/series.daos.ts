@@ -1,6 +1,7 @@
 import * as admin from "firebase-admin"
-import { CollectionReference, DocumentReference, DocumentSnapshot, Query, QuerySnapshot, WriteResult } from "firebase-admin/firestore";
+import { CollectionReference, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot, QuerySnapshot, WriteResult } from "firebase-admin/firestore";
 import { FirebaseService } from "../../config/firebase";
+import Episode from "../../models/Episode";
 import Serie from "../../models/Serie";
 import { Utils } from "../../utils/utils";
 
@@ -43,7 +44,14 @@ export class SeriesDAO {
             query = Utils.getInstance().listActionsDAO(dbRef, sort, range, filter)
             const snapshot: QuerySnapshot = await query.get()
             for (const document of snapshot.docs){
-                returnValue.push(document.data() as Serie)
+                const serie: Serie = document.data() as Serie
+                // const episodesSnapshot: QuerySnapshot = await this.db.collection("series").doc(document.id).collection("episodes").withConverter(Episode.episodeConverter).get()
+                // serie.episodes = []
+                // for(const episodeDocument of episodesSnapshot.docs){
+                //     serie.episodes.push(episodeDocument.data() as Episode)
+                //     returnValue.push(serie)
+                // }
+                returnValue.push(serie)
             }
             return returnValue
         } catch (error) {
@@ -54,7 +62,7 @@ export class SeriesDAO {
     async getSerieById(serieId: string) {
         let returnValue: Serie = null
         try {
-            const snapshot: DocumentSnapshot = await this.db.collection("series").doc(serieId).get()
+            const snapshot: DocumentSnapshot = await this.db.collection("series").doc(serieId).withConverter(Serie.serieConverter).get()
             returnValue = snapshot.data() as Serie
             return returnValue
         } catch (error) {
@@ -64,7 +72,7 @@ export class SeriesDAO {
 
     async updateSerie(serieId: string, serie: Serie) {
         try {
-            const writeResult: WriteResult = await this.db.collection("series").doc(serieId).set(serie, {merge: true})
+            const writeResult: WriteResult = await this.db.collection("series").doc(serieId).withConverter(Serie.serieConverter).set(serie, {merge: true})
             return "Serie updated successfully"
         } catch (error) {
             throw error

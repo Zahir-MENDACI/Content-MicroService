@@ -12,6 +12,7 @@ export class SeriesController {
             const addSerie = await seriesService.addSerie(req.body)
             res.status(200).send(addSerie);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -23,6 +24,7 @@ export class SeriesController {
             const series = await seriesService.getSeries(listActions)
             res.status(200).send(series);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -33,6 +35,7 @@ export class SeriesController {
             const serie = await seriesService.getSerieById(req.params)
             res.status(200).send(serie);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -43,6 +46,7 @@ export class SeriesController {
             const serieUpdated = await seriesService.updateSerie(req.body, req.params)
             res.status(200).send(serieUpdated);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }
@@ -53,6 +57,7 @@ export class SeriesController {
             const serieDeleted = await seriesService.deleteSerie(req.params)
             res.status(200).send(serieDeleted);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error);
         }
     }

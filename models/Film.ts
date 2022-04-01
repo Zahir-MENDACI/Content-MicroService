@@ -2,18 +2,10 @@ import * as admin from "firebase-admin"
 import Content from "./Content";
 
 class Film extends Content{
-
-  id: string;
-  title: string;
-  category: string;
-  global_description: string;
-  released_date: Date;
   duration: number;
-  createdAt: Date;
-  updatedAt: Date
   
-    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, duration: number, createdAt: Date, updatedAt: Date) {
-      super(id, title, category, global_description, released_date, createdAt, updatedAt)
+    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, poster: string, available_country: string[], active: boolean, duration: number, createdAt: Date, updatedAt: Date) {
+      super(id, title, global_description, released_date, poster, createdAt, updatedAt, category, available_country, active)
       this.duration = duration
     }
 
@@ -25,6 +17,9 @@ class Film extends Content{
             category: film.category,
             global_description: film.global_description,
             released_date: film.released_date,
+            poster: film.poster,
+            available_country: film.available_country,
+            active: film.active,
             duration: film.duration,
             createdAt: film.createdAt,
             updatedAt: film.updatedAt
@@ -65,6 +60,9 @@ class Film extends Content{
             data.category,
             data.global_description,
             formatedDate,
+            data.poster,
+            data.available_country,
+            data.active,
             data.duration,
             formatedCreatedAt,
             formatedUpdatedAt
