@@ -20,6 +20,7 @@ app.use(async (req: express.Request | any, res: express.Response, next: express.
     Utils.getInstance().getUser(req.headers.authorization)
         .then((result) => {
             if (result.status === "active"){
+                req.user = result
                 next()
             } else if (result.status === "suspended"){
                 res.status(401).send("Your account is suspended")

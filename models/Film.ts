@@ -4,8 +4,8 @@ import Content from "./Content";
 class Film extends Content{
   duration: number;
   
-    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, poster: string, available_country: string[], active: boolean, duration: number, createdAt: Date, updatedAt: Date) {
-      super(id, title, global_description, released_date, poster, createdAt, updatedAt, category, available_country, active)
+    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, url: string, available_country: string[], active: boolean, duration: number, createdAt: Date, updatedAt: Date, poster?: string) {
+      super(id, title, global_description, released_date, url, createdAt, updatedAt, category, available_country, active, poster)
       this.duration = duration
     }
 
@@ -17,7 +17,7 @@ class Film extends Content{
             category: film.category,
             global_description: film.global_description,
             released_date: film.released_date,
-            poster: film.poster,
+            url: film.url,
             available_country: film.available_country,
             active: film.active,
             duration: film.duration,
@@ -60,7 +60,7 @@ class Film extends Content{
             data.category,
             data.global_description,
             formatedDate,
-            data.poster,
+            data.url,
             data.available_country,
             data.active,
             data.duration,

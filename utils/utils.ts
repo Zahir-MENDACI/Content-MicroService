@@ -24,14 +24,9 @@ export class Utils {
   listActions(inputSort: string, inputRange: string, filter: string) {
     let parsedSort: string[];
     let parsedRange: number[];
-    let parsedFilter: Object;
+    let parsedFilter: any;
     let startRange: number;
     let endRange: number;
-
-    // if (inputRange == undefined) {
-    //   const pagination: number = 9;
-    //   inputRange = `[0, ${pagination}]`;
-    // }
 
     if (inputSort != null && inputSort != undefined && inputSort.length > 0) {
       parsedSort = JSON.parse(inputSort);
@@ -122,4 +117,13 @@ export class Utils {
     res.status(200).send(returnValue)
   }
 
+  async getPoster (id: string){
+    return await axios.get(`http://localhost:8080/postersByIdContent/${id}`)
+    .then((res) => {
+      return res.data.url
+    }).catch((e) => {
+      return null
+    })
+  }
+  
 }

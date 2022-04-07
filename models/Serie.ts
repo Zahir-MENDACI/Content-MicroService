@@ -7,8 +7,8 @@ class Serie extends Content{
   nb_episodes: number;
   episodes: Episode[];
   
-    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, poster: string, available_country: string[], active: boolean, nb_episodes: number, createdAt: Date, updatedAt: Date) {
-      super(id, title, global_description, released_date, poster, createdAt, updatedAt, category, available_country, active)
+    constructor(id: string, title: string, category: string, global_description: string, released_date: Date, url: string, available_country: string[], active: boolean, nb_episodes: number, createdAt: Date, updatedAt: Date, poster?: string) {
+      super(id, title, global_description, released_date, url, createdAt, updatedAt, category, available_country, active, poster)
       this.nb_episodes = nb_episodes
     }
 
@@ -20,7 +20,7 @@ class Serie extends Content{
             category: serie.category,
             global_description: serie.global_description,
             released_date: serie.released_date,
-            poster: serie.poster,
+            url: serie.url,
             available_country: serie.available_country,
             active: serie.active,
             nb_episodes: serie.nb_episodes,
@@ -48,6 +48,14 @@ class Serie extends Content{
           if (data.released_date) {
             formatedDate = data.released_date.toDate();
           }
+          let formatedCreatedAt;
+          if (data.createdAt) {
+            formatedCreatedAt = data.createdAt.toDate();
+          }
+          let formatedUpdatedAt;
+          if (data.updatedAt) {
+            formatedUpdatedAt = data.updatedAt.toDate();
+          }
     
           const returnValue = new Serie(
             snapshot.id,
@@ -55,12 +63,12 @@ class Serie extends Content{
             data.category,
             data.global_description,
             formatedDate,
-            data.poster,
+            data.url,
             data.available_country,
             data.active,
             data.nb_episodes,
-            data.createdAt,
-            data.updatedAt
+            formatedCreatedAt,
+            formatedUpdatedAt
           );
           return returnValue;
         },

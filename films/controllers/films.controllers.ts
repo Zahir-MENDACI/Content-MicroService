@@ -25,6 +25,12 @@ export class FilmsController {
         const filmsService = FilmsService.getInstance();
         try {
             const listActions = Utils.getInstance().listActions(req.query.sort as string, req.query.range as string, req.query.filter as string);
+            listActions.filter = {
+                ...listActions.filter,
+                country: req.user?.location
+            }
+            console.log(listActions.filter)
+
             // if (!req.user.active){
             //     res.status(401).send("Votre compte est suspendu");
             // }

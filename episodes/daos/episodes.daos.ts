@@ -1,3 +1,4 @@
+import axios from "axios";
 import * as admin from "firebase-admin"
 import { CollectionReference, DocumentReference, DocumentSnapshot, Query, QuerySnapshot, WriteResult } from "firebase-admin/firestore";
 import { FirebaseService } from "../../config/firebase";
@@ -43,7 +44,10 @@ export class EpisodesDAO {
             query = Utils.getInstance().listActionsDAO(dbRef, sort, range, filter)
             const snapshot: QuerySnapshot = await query.get()
             for (const document of snapshot.docs){
-                returnValue.push(document.data() as Episode)
+                const poster = await Utils.getInstance().getPoster(document.id)
+                const episode = document.data() as Episode
+                episode.poster = poster
+                returnValue.push(episode)
             }
             return returnValue
         } catch (error) {
@@ -52,11 +56,12 @@ export class EpisodesDAO {
     }
 
     async getEpisodeById(idSerie: string, episodeId: string) {
-        let returnValue: Episode = null
         try {
             const snapshot: DocumentSnapshot = await this.db.collection("series").doc(idSerie).collection("episodes").doc(episodeId).withConverter(Episode.episodeConverter).get()
-            returnValue = snapshot.data() as Episode
-            return returnValue
+            const poster = await Utils.getInstance().getPoster(snapshot.id)
+            const episode: Episode = snapshot.data() as Episode
+            episode.poster = poster
+            return episode
         } catch (error) {
             throw error
         }

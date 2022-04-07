@@ -1,13 +1,13 @@
 import * as admin from "firebase-admin"
 import Content from "./Content";
 
-class Episode extends Content{
+class Episode extends Content {
     description: string;
     num: number;
     duration: number;
 
-    constructor(id: string, title: string, description: string, released_date: Date, num: number, duration: number, poster: string, active: boolean, createdAt: Date, updatedAt: Date) {
-        super(id, title, undefined, released_date, poster, createdAt, updatedAt, undefined, undefined, active)
+    constructor(id: string, title: string, description: string, released_date: Date, url: string, num: number, duration: number, active: boolean, createdAt: Date, updatedAt: Date, poster?: string) {
+        super(id, title, undefined, released_date, url, createdAt, updatedAt, undefined, undefined, active, poster)
         this.description = description
         this.num = num
         this.duration = duration
@@ -20,6 +20,7 @@ class Episode extends Content{
                 title: episode.title,
                 description: episode.description,
                 released_date: episode.released_date,
+                url: episode.url,
                 num: episode.num,
                 duration: episode.duration,
                 active: episode.active,
@@ -43,17 +44,30 @@ class Episode extends Content{
         fromFirestore(snapshot: admin.firestore.QueryDocumentSnapshot) {
             const data = snapshot.data();
 
+            let formatedDate;
+            if (data.released_date) {
+                formatedDate = data.released_date.toDate();
+            }
+            let formatedCreatedAt;
+            if (data.createdAt) {
+                formatedCreatedAt = data.createdAt.toDate();
+            }
+            let formatedUpdatedAt;
+            if (data.updatedAt) {
+                formatedUpdatedAt = data.updatedAt.toDate();
+            }
+
             const returnValue = new Episode(
                 snapshot.id,
                 data.title,
                 data.description,
-                data.released_date,
+                formatedDate,
+                data.url,
                 data.num,
                 data.duration,
-                data.poster,
                 data.active,
-                data.createdAt,
-                data.updatedAt
+                formatedCreatedAt,
+                formatedUpdatedAt
             );
             return returnValue;
         },
