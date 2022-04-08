@@ -28,7 +28,7 @@ app.use(async (req: express.Request | any, res: express.Response, next: express.
                 throw "Inexistant user"
             }
         }).catch(() => {
-            res.status(401).send("Inexistant user")
+            res.status(403).send("Inexistant user")
         })
 });
 

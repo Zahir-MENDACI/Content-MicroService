@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  content:
+    container_name: content
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7070:7070
+    networks:
+    - netflix-network
+networks:
+  netflix-network:
+    name: netflix-network

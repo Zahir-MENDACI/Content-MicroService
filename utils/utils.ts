@@ -97,7 +97,7 @@ export class Utils {
   }
 
   async getUser(id: string) {
-    return await axios.get(`http://localhost:6060/users/${id}`)
+    return await axios.get(`http://users:6060/users/${id}`)
     .then((result) => {
       return result.data
     }).catch(e => {
@@ -118,7 +118,7 @@ export class Utils {
   }
 
   async getPoster (id: string){
-    return await axios.get(`http://localhost:8080/postersByIdContent/${id}`)
+    return await axios.get(`http://posters:8080/postersByIdContent/${id}`)
     .then((res) => {
       return res.data.url
     }).catch((e) => {

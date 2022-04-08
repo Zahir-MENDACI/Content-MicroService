@@ -100,7 +100,7 @@ export class FilmsDAO {
 
     async getFilmById(filmId: string) {
         try {
-            const snapshot: DocumentSnapshot = await this.db.collection("films").doc(filmId).get()
+            const snapshot: DocumentSnapshot = await this.db.collection("films").doc(filmId).withConverter(Film.filmConverter).get()
             const poster = await Utils.getInstance().getPoster(snapshot.id)
             const film: Film = snapshot.data() as Film
             film.poster = poster
