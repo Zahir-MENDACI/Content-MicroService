@@ -101,8 +101,12 @@ export class FilmsDAO {
     async getFilmById(filmId: string) {
         try {
             const snapshot: DocumentSnapshot = await this.db.collection("films").doc(filmId).withConverter(Film.filmConverter).get()
-            const poster = await Utils.getInstance().getPoster(snapshot.id)
+            if (!snapshot.exists) return "Inexistant film"
             const film: Film = snapshot.data() as Film
+            if (film.active !== true) {
+                return "Inexistant film"
+            }
+            const poster = await Utils.getInstance().getPoster(snapshot.id)
             film.poster = poster
             return film
         } catch (error) {
@@ -112,7 +116,7 @@ export class FilmsDAO {
 
     async updateFilm(filmId: string, film: Film) {
         try {
-            const writeResult: WriteResult = await this.db.collection("films").doc(filmId).set(film, { merge: true })
+            const writeResult: WriteResult = await this.db.collection("films").doc(filmId).withConverter(Film.filmConverter).set(film, { merge: true })
             return "Film updated successfully"
         } catch (error) {
             throw error

@@ -20,7 +20,7 @@ export class EpisodesService {
     async addEpisode(body: any, params: any) {
         try {
             const idSerie: string = params.idSerie
-            const episode = new Episode(undefined, body.title, body.description, new Date(body.released_date), body.num, body.duration, undefined, true, new Date(), new Date())
+            const episode = new Episode(undefined, body.title, body.description, new Date(body.released_date), body.url, body.num, body.duration, true, new Date(), new Date())
             return await this.dao.add(idSerie, episode)
         } catch (error) {
             throw error
@@ -52,7 +52,7 @@ export class EpisodesService {
         try {
             const idSerie: string = params.idSerie
             const idEpisode: string = params.id
-            const episode = new Episode(body.id, body.title, body.description, new Date(body.released_date), body.num, body.duration, undefined, body.status, undefined, new Date())
+            const episode = new Episode(body.id, body.title, body.description, new Date(body.released_date), body.url, body.num, body.duration, body.status, undefined, new Date())
             return await this.dao.updateEpisode(idSerie, idEpisode, episode)
         } catch (error) {
             throw error

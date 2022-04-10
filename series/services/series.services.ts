@@ -19,7 +19,7 @@ export class SeriesService {
 
     async addSerie(body: any) {
         try {
-            const serie = new Serie(undefined, body.title, body.category, body.global_description, new Date(body.released_date), undefined, body.available_country, true, body.nb_episodes, new Date(), new Date())
+            const serie = new Serie(undefined, body.title, body.category, body.global_description, new Date(body.released_date), body.url, body.available_country, true, body.nb_episodes, new Date(), new Date())
             return await this.dao.add(serie)
         } catch (error) {
             throw error
@@ -48,7 +48,7 @@ export class SeriesService {
     async updateSerie(body: any, params: any) {
         try {
             const serieId: string = params.id
-            const serie = new Serie(undefined, body.title, body.category, body.global_description, new Date(body.released_date), undefined, body.available_country, body.status, body.nb_episodes, undefined, new Date())
+            const serie = new Serie(undefined, body.title, body.category, body.global_description, new Date(body.released_date), body.url, body.available_country, body.status, body.nb_episodes, undefined, new Date())
             return await this.dao.updateSerie(serieId, serie)
         } catch (error) {
             throw error

@@ -65,8 +65,12 @@ export class SeriesDAO {
     async getSerieById(serieId: string) {
         try {
             const snapshot: DocumentSnapshot = await this.db.collection("series").doc(serieId).withConverter(Serie.serieConverter).get()
-            const poster = await Utils.getInstance().getPoster(snapshot.id)
+            if (!snapshot.exists) return "Inexistant serie"
             const serie: Serie = snapshot.data() as Serie
+            if (serie.active !== true) {
+                return "Inexistant serie"
+            }
+            const poster = await Utils.getInstance().getPoster(snapshot.id)
             serie.poster = poster
             return serie
         } catch (error) {
@@ -85,7 +89,7 @@ export class SeriesDAO {
 
     async deleteSerie(serieId: string) {
         try {
-            const writeResult: WriteResult = await this.db.collection("series").doc(serieId).delete()
+            const writeResult: WriteResult = await this.db.collection("series").doc(serieId).set({ active: false }, { merge: true })
             return "Serie deleted successfully"
         } catch (error) {
             throw error
